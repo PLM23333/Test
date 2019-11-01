@@ -20,7 +20,15 @@ public class GoodService {
 	 */
 	public ResponResult delGoods(Goods g) {
 		ResponResult res = new ResponResult(Status.SUCCESS);
-		
+		if(g == null) {
+			res = new ResponResult(Status.NULL);
+		}
+		Integer getgId = g.getgId();
+		if(goodsDao.isExist(getgId)) {
+			res = new ResponResult(Status.FAIL);
+		}else {
+			goodsDao.deleteById(g.getgId());
+		}
 		return res;
 	}
 
