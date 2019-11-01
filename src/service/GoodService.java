@@ -45,7 +45,7 @@ public class GoodService {
     	if(goodsDao.isExist(getgId)) {
     		res = new ResponResult(Status.FAIL);
     	}else {
-    		goodsDao.insert(g);;
+    		goodsDao.insert(g);
     	}  	
     	return res;
     }

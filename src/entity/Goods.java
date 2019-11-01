@@ -16,6 +16,13 @@ public class Goods {
 		this.remark = remark;
 	}
 	
+	public Goods(Integer gId, String gName, double gPrice, int gNum) {
+		super();
+		this.gId = gId;
+		this.gName = gName;
+		this.gPrice = gPrice;
+		this.gNum = gNum;
+	}
 
 	public Goods(Integer gId) {
 		super();

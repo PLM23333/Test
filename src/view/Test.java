@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
 
+import dao.IDao;
+import dao.impl.GoodsDaoImpl;
 import entity.CartItems;
 import entity.Goods;
 import entity.User;
@@ -58,43 +60,151 @@ public class Test {
 		String acount = sc.next();
 		System.out.print("密码：");
 		String pwd = sc.next();
-	    ResponResult loginStatus = null;
-	    int status = -1;
-	    do {
-	    	loginStatus = us.login(new User(acount, pwd));
-	    	status = loginStatus.getStatus();
-	    	if(status == 1000) {
-	    		break;
-	    	}
-	    	System.out.println("输入的账号密码不正确，请重新输入\n账号:");
-	    	acount = sc.next();
-	    	System.out.print("密码:");
-	    	pwd = sc.next();
-	    }while(true);
-	    
-	    User userL = (User) loginStatus.getObj();//登陆成功后保存到状态类中的用户信息
-	    
-	    System.out.println("欢迎:" + userL.getuName());
-	    System.out.println("请输入要查找的物品的ID：");
-	    int gId = sc.nextInt();
-	    ResponResult res = gs.showGoods(new Goods(gId));
-	    List<Goods> god = null;
-	    if(res.getStatus() == 1000) {
-	    	god = (List<Goods>) res.getObj();
-	    }else if(res.getStatus() == 1001) {
-	    	System.out.println("空指针");
-	    }else {
-	    	System.out.println("23333");
-	    }
-	    showGoods(god);
-	    String flag = null;
-	    do {
-	    	addCart(sc, gs);
-	    	System.out.println("是否继续添加到购物车?(y/n)");
-	    	flag = sc.next();
-	    }while(flag.equals("y"));
+		ResponResult loginStatus = null;
+		int status = -1;
+		do {
+			loginStatus = us.login(new User(acount, pwd));
+			status = loginStatus.getStatus();
+			if (status == 1000) {
+				break;
+			}
+			System.out.println("输入的账号密码不正确，请重新输入");
+			System.out.print("账号:");
+			acount = sc.next();
+			System.out.print("密码:");
+			pwd = sc.next();
+		} while (true);
+		User userL = (User) loginStatus.getObj();// 登陆成功后保存到状态类中的用户信息
+		System.out.println("欢迎:" + userL.getuName());
+		String flag = null;
+		List<Goods> god = null;
+		ResponResult respStart = gs.showGoods(null);
+		god = (List<Goods>) respStart.getObj();
+		showGoods(god);
+		int index = 11;
+		while (index != 0) {
+			System.out.println("**************************************");
+			System.out.println("1.添加商品\t\t\t2.删除商品\n3.修改商品信息\t\t4.查询单条商品信息\n5.查询全部商品信息\t\t6.添加商品到购物车\n"
+					+ "7.从购物车删除商品\t\t8.修改购物车内商品属性\n9.查询购物车单条商品信息\t10.查看购物车所有商品信息\n0.退出");
+			System.out.println("选择业务:");
+			index = sc.nextInt();
+			switch (index) {
+			case 1:
+				/*
+				 * 添加商品
+				 */
+				do {
+					addGoods(sc, gs);
+					System.out.println("是否继续添加到购物车?(y/n)");
+					flag = sc.next();
+				} while (flag.equals("y"));
+				break;
+
+			case 2:
+				/*
+				 * 删除商品
+				 */
+				break;
+
+			case 3:
+				/*
+				 * 修改商品信息
+				 */
+				break;
+			case 4:
+				/*
+				 * 查询单条商品信息
+				 */
+				System.out.print("请输入要查找的物品的ID：");
+				Integer gId = sc.nextInt();
+				ResponResult respOne = gs.showGoods(new Goods(gId));
+				if (respOne.getStatus() == 1000) {
+					god = (List<Goods>) respOne.getObj();
+					showGoods(god);
+				} else if (respOne.getStatus() == 1001) {
+					System.out.println("找不到该商品信息");
+				}
+
+				break;
+
+			case 5:
+				/*
+				 * 查询全部商品信息
+				 */
+				ResponResult respAll = gs.showGoods(null);
+				god = (List<Goods>) respAll.getObj();
+				showGoods(god);
+				break;
+
+			case 6:
+				/*
+				 * 添加商品到购物车
+				 */
+				do {
+					addCart(sc, gs);
+					System.out.println("是否继续添加到购物车?(y/n)");
+					flag = sc.next();
+				} while (flag.equals("y"));
+				break;
+
+			case 7:
+				/*
+				 * 从购物车删除商品
+				 */
+				break;
+
+			case 8:
+				/*
+				 * 修改购物车内商品属性
+				 */
+				break;
+
+			case 9:
+				/*
+				 * 查询购物车单条商品信息
+				 */
+				break;
+
+			case 10:
+				/*
+				 * 查看购物车所有商品信息
+				 */
+				break;
+
+			case 0:
+				index = 0;
+				System.out.println("886");
+				break;
+
+			default:
+				index = 0;
+				break;
+			}
+		}
 	}
-	
+
+	/*
+	 * 添加商品
+	 */
+	private static void addGoods(Scanner sc, GoodService gs) {
+		System.out.println("输入商品ID：");
+		int gId = sc.nextInt();
+		System.out.println("输入商品名称：");
+		String gName = sc.next();
+		System.out.println("输入商品单价：");
+		double gPrice = sc.nextDouble();
+		System.out.println("输入商品库存数：");
+		int gNum = sc.nextInt();
+		Goods newGood = new Goods(gId, gName, gPrice, gNum);
+		ResponResult addGoodToWareHouse = gs.addGoods(newGood);
+		int res = addGoodToWareHouse.getStatus();
+		if (res == 1000) {
+			System.out.println("加入成功");
+		} else {
+			System.out.println("添加失败");
+		}
+	}
+
 	/*
 	 * 显示商品
 	 */
@@ -104,7 +214,7 @@ public class Test {
 			System.out.println(g.getgId() + "\t" + g.getgName() + "\t" + g.getgNum() + "\t" + g.getgPrice());
 		}
 	}
-	
+
 	/*
 	 * 添加商品到购物车
 	 */
@@ -129,7 +239,7 @@ public class Test {
 			throw new Exception("加入失败，异常发生在addCart");
 		}
 	}
-	
+
 	/*
 	 * 显示购物车里的商品
 	 */
