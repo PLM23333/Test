@@ -71,7 +71,10 @@ public class Test {
 	    	System.out.print("密码:");
 	    	pwd = sc.next();
 	    }while(true);
+	    
+	    
 	    User userL = (User) loginStatus.getObj();//登陆成功后保存到状态类中的用户信息
+	    
 	    System.out.println("欢迎:" + userL.getuName());
 	    System.out.println("请输入要查找的物品的ID：");
 	    int gId = sc.nextInt();
