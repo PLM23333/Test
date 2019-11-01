@@ -14,6 +14,15 @@ import enums.Status;
 public class GoodService {
 	private IDao<Goods> goodsDao = new GoodsDaoImpl();
 	private CartDao cartDao = new CartDao();
+	
+	/**
+	 * 删除商品
+	 */
+	public ResponResult delGoods(Goods g) {
+		ResponResult res = new ResponResult(Status.SUCCESS);
+		
+		return res;
+	}
 
 	/**
 	 * 添加商品
