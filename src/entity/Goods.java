@@ -30,6 +30,11 @@ public class Goods {
 	}
 
 
+	public Goods(String gName) {
+		super();
+		this.gName = gName;
+	}
+
 	public Goods() {
 		super();
 	}

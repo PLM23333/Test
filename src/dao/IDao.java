@@ -6,7 +6,8 @@ import entity.Goods;
 
 public interface IDao<T> {
 	void insert(T g);
-	Goods selectById(int id);
+	Goods selectById(int tId);
+	Goods selectByName(String tName);
 	List<T> selectAll();
     void updateById(T newT);
     void deleteById(int tId);

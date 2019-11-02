@@ -12,7 +12,7 @@ public class UserDao {
 	//新建用户
 	public UserDao() {
 		userBox = Store.userBox;
-		User u1 = new User(1, "A", "123");
+		User u1 = new User(1, "a", "123");
 		userBox.add(u1);
 	}
 	

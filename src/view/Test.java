@@ -24,27 +24,27 @@ public class Test {
 		GoodService gs = new GoodService();
 		ResponResult sg = gs.showGoods(null);
 
-		List<Goods> obj = (List<Goods>) sg.getObj();
-		/*
-		 * for(Goods g : obj) { System.out.println(g.getgId()+g.getgName()); }
-		 */
-
-		Goods goods = new Goods();
-		goods.setgId(3);
-		ResponResult showGoods = gs.showGoods(goods);
-		Goods obj2 = (Goods) showGoods.getObj();
-		System.out.println(showGoods.getStatus());
-		// System.out.println(obj2.getgName()+obj2.getgNum());
-		// gs.addGoods(new Goods(1, "商品1", 5.6, 500, ""));
-
-		ArrayList goodBox = new ArrayList();
-		List<String> str = new ArrayList<>();
-		goodBox.add(new Goods(1, "商品1", 5.6, 500, ""));
-		int size = goodBox.size();
-		for (Object g : goodBox) {
-			Goods g1 = (Goods) g;
-			System.out.println(g1.getgId());
-		}
+//		List<Goods> obj = (List<Goods>) sg.getObj();
+//		/*
+//		 * for(Goods g : obj) { System.out.println(g.getgId()+g.getgName()); }
+//		 */
+//
+//		Goods goods = new Goods();
+//		goods.setgId(3);
+//		ResponResult showGoods = gs.showGoods(goods);
+//		Object obj2 = showGoods.getObj();
+//		System.out.println(showGoods.getStatus());
+//		// System.out.println(obj2.getgName()+obj2.getgNum());
+//		// gs.addGoods(new Goods(1, "商品1", 5.6, 500, ""));
+//
+//		ArrayList goodBox = new ArrayList();
+//		List<String> str = new ArrayList<>();
+//		goodBox.add(new Goods(1, "商品1", 5.6, 500, ""));
+//		int size = goodBox.size();
+//		for (Object g : goodBox) {
+//			Goods g1 = (Goods) g;
+//			System.out.println(g1.getgId());
+//		}
 
 		System.out.println("************************************************");
 		UserService us = new UserService();
@@ -56,26 +56,26 @@ public class Test {
 		System.out.println(user2.getuId() + " " + user2.getuName());
 		// 登录
 		Scanner sc = new Scanner(System.in);
-		System.out.print("用户名：");
-		String acount = sc.next();
-		System.out.print("密码：");
-		String pwd = sc.next();
-		ResponResult loginStatus = null;
-		int status = -1;
-		do {
-			loginStatus = us.login(new User(acount, pwd));
-			status = loginStatus.getStatus();
-			if (status == 1000) {
-				break;
-			}
-			System.out.println("输入的账号密码不正确，请重新输入");
-			System.out.print("账号:");
-			acount = sc.next();
-			System.out.print("密码:");
-			pwd = sc.next();
-		} while (true);
-		User userL = (User) loginStatus.getObj();// 登陆成功后保存到状态类中的用户信息
-		System.out.println("欢迎:" + userL.getuName());
+//		System.out.print("用户名：");
+//		String acount = sc.next();
+//		System.out.print("密码：");
+//		String pwd = sc.next();
+//		ResponResult loginStatus = null;
+//		int status = -1;
+//		do {
+//			loginStatus = us.login(new User(acount, pwd));
+//			status = loginStatus.getStatus();
+//			if (status == 1000) {
+//				break;
+//			}
+//			System.out.println("输入的账号密码不正确，请重新输入");
+//			System.out.print("账号:");
+//			acount = sc.next();
+//			System.out.print("密码:");
+//			pwd = sc.next();
+//		} while (true);
+//		User userL = (User) loginStatus.getObj();// 登陆成功后保存到状态类中的用户信息
+//		System.out.println("欢迎:" + userL.getuName());
 		String flag = null;
 		List<Goods> god = null;
 		ResponResult respStart = gs.showGoods(null);
@@ -104,6 +104,11 @@ public class Test {
 				/*
 				 * 删除商品
 				 */
+				do {
+					delGoods(sc, gs);
+					System.out.println("继续删除?(y/n)");
+					flag = sc.next();
+				}while (flag.equals("y"));
 				break;
 
 			case 3:
@@ -115,22 +120,23 @@ public class Test {
 				/*
 				 * 查询单条商品信息
 				 */
-				System.out.print("请输入要查找的物品的ID：");
-				Integer gId = sc.nextInt();
+				god = null;
+				System.out.print("请输入要查找的物品的id：");
+				int gId = sc.nextInt();
 				ResponResult respOne = gs.showGoods(new Goods(gId));
 				if (respOne.getStatus() == 1000) {
 					god = (List<Goods>) respOne.getObj();
-					showGoods(god);
 				} else if (respOne.getStatus() == 1001) {
 					System.out.println("找不到该商品信息");
 				}
-
+				showGoods(god);
 				break;
 
 			case 5:
 				/*
 				 * 查询全部商品信息
 				 */
+				god = null;
 				ResponResult respAll = gs.showGoods(null);
 				god = (List<Goods>) respAll.getObj();
 				showGoods(god);
@@ -173,7 +179,7 @@ public class Test {
 
 			case 0:
 				index = 0;
-				System.out.println("886");
+				System.out.println("886!!!");
 				break;
 
 			default:
@@ -181,6 +187,7 @@ public class Test {
 				break;
 			}
 		}
+		sc.close();
 	}
 
 	/*
@@ -202,6 +209,21 @@ public class Test {
 			System.out.println("加入成功");
 		} else {
 			System.out.println("添加失败");
+		}
+	}
+	
+	/*
+	 * 删除商品
+	 */
+	private static void delGoods(Scanner sc, GoodService gs) {
+		System.out.println("输入商品id：");
+		int gId = sc.nextInt();
+		ResponResult delGoodsRes = gs.delGoods(new Goods(gId));
+		int delRes = delGoodsRes.getStatus();
+		if(delRes == 1000) {
+			System.out.println("删除成功");
+		} else {
+			System.out.println("失败");
 		}
 	}
 

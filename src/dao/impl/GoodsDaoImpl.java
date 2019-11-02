@@ -78,5 +78,13 @@ public class GoodsDaoImpl implements IDao<Goods> {
 		}
 		return true;
 	}
-
+	
+	/**
+	 * 根据名称查询商品
+	 */
+	@Override
+	public Goods selectByName(String tName) {
+		
+		return null;
+	}
 }

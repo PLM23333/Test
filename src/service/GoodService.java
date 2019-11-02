@@ -23,7 +23,7 @@ public class GoodService {
 		if(g == null) {
 			res = new ResponResult(Status.NULL);
 		}
-		Integer getgId = g.getgId();
+		Integer getgId = g.getgId() - 1;
 		if(goodsDao.isExist(getgId)) {
 			res = new ResponResult(Status.FAIL);
 		}else {
@@ -65,7 +65,7 @@ public class GoodService {
 				good = goodsDao.selectById(g.getgId());
 				List<Goods> goods = new ArrayList();
 				goods.add(good);
-				res.setObj(good);
+				res.setObj(goods);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
